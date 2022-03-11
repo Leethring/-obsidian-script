@@ -12,7 +12,7 @@ Most scripts are shell scripts, so you need command line to deal with your notes
 
 The Obsidian use `[[<note filename>|<display text>]]` wiki link to link each others. You can just use the form of `[[<note filename>]]`, but it's hard to view a note by just using this format. So we add `|` to change the display text. 
 
-We may delete some linked notes, and the original wiki link is useless. If we want to delete the link and keep the display text, we can use [delObsidianLink.sh](./deObsidianLink) shell script to delete all links in one note. 
+We may delete some linked notes, and the original wiki link is useless. If we want to delete the link and keep the display text, we can use [delObsidianLink.sh](delObsidianLink/delObsidianLink.sh) shell script to delete all links in one note. 
 
 ```  shell
 $ sh deleteObsidianLink.sh <file.md>
