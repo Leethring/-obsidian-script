@@ -1,0 +1,1 @@
+[[1a-note-method|note method]]
