@@ -4,6 +4,8 @@ The Obisidian script project store operational scripts or code for Obsidian app.
 
 Obsidian is note taking app using local markdown files with Zettelkasten method. When you accumulate thousands of notes, it's hard to adjust them all manually. So we need some scripts to help us automatically manipulate note files, such deleting, modification, adding, etc. This project is for it. 
 
+A script can do a task. For example deleteObsidianLink.sh delete wiki link for a file. 
+
 Most scripts are shell scripts, so you need command line to deal with your notes.
 
 ## Delete wiki link in one file
