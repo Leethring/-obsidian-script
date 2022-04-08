@@ -12,10 +12,15 @@ Most scripts are shell scripts, so you need command line to deal with your notes
 
 The Obsidian use `[[<note filename>|<display text>]]` wiki link to link each others. You can just use the form of `[[<note filename>]]`, but it's hard to view a note by just using this format. So we add `|` to change the display text. 
 
-If we delete some linked notes, the original wiki links are useless. If we want to delete the links and keep the display text, we can use [delLink.sh](/delLink/delLink.sh) script to delete all links in note files. 
+If we delete some linked notes, the original wiki links are useless. If we want to delete the links and keep the display text, we can use [delLink.sh](/src/delLink.sh) script to delete all links in note files. 
 
 ```  shell
-$ sh deleteObsidianLink.sh <file.md>
+$ sh delLink.sh <file.md>
 # this script delete all wiki link in the file.md 
 # Please change file.md to the file you want to adjust.
 ```
+
+## Others
+
+- _addTitle.sh_ add filename to the start of the note file. 
+- _capitalizeWords.sh_ capitalizes the first letter of words in the first line.
