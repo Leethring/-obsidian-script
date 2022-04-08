@@ -1,5 +1,6 @@
 #! /bin/sh
 # deleteObsidianLink.sh will delete the Obsidian link of files.
+# Problem to be solved: this scrip delete the whole occurence in the same line
 
 # for every file in argument, do the execution 
 for file in "$@"; do 
