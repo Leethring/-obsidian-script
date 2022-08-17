@@ -24,3 +24,4 @@ $ sh delLinkLeftDisplay.sh  <file.md>
 
 - _addTitle.sh_ add filename to the start of the note files. 
 - _capitalizeWords.sh_ capitalizes the first letter of words in the first line.
+- [addSeeAlso.py](/src/addSeeAlso.py) add a See Also section to notes in current directory.
