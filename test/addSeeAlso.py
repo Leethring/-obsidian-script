@@ -3,11 +3,10 @@
 
 import glob 
 import re
+import sys
 
 # Find all markdown notes
-filenames = glob.glob('./*/*.md')
-filenames_cur = glob.glob('./*.md')
-filenames.extend(filenames_cur)
+filenames = glob.glob(sys.argv[1])
 
 # Add See Also section 
 for filename in filenames:

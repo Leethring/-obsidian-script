@@ -1,13 +1,18 @@
 #! python3
 # addSeeAlso.py - Adds See Also section at the end of a note
 
-import glob 
+import os
 import re
+import sys
 
 # Find all markdown notes
-filenames = glob.glob('./*/*.md')
-filenames_cur = glob.glob('./*.md')
-filenames.extend(filenames_cur)
+filenames = []
+for i in range(len(sys.argv) - 1):
+    file = os.path.abspath(sys.argv[i + 1])
+    if file.endswith('.md'):
+        filenames.append(file)
+    else:
+        continue
 
 # Add See Also section 
 for filename in filenames:
