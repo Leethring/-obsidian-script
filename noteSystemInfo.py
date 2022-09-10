@@ -1,19 +1,22 @@
-# noteSystemData.py - Shows some data about our note system. 
-# Include:
-# Average number of new notes daily, monthly
-# Max number of new notes daily, monthly
-# Sum of New notes every month
+#! python3
+# noteSystemInfo.py - Shows information about our note system. 
+
 import os
 import glob
 
 def walkNotes(f):
-    """Counts the number of notes within a directory."""
-    folderName = os.path.basename(f)
+    """Counts the number of notes within a directory.
+    
+    f: the path of this note folder
+    """
+    # Find all files in this folder
     globMonthPath = os.path.join(f, '*/*/*')
     globYearPath = os.path.join(f, '*/*')
     allMonthFiles = glob.glob(globMonthPath)
     allYearFiles = glob.glob(globYearPath)
     allFiles = allMonthFiles + allYearFiles
+    # Find all notes in this folder
+    # Notes end with '.md'
     notes = []
     for file in allFiles:
         if file.endswith('.md'):
@@ -26,10 +29,14 @@ def year(notes):
     
     notes: A list includes all notes
     """
+    # Dictionary to store year-numberOfNotes pairs
     yearDict = {}
+    # We start write note from 2018 
     startYear = 2018
+    # Init year dictionary
     for i in range(5):
         yearDict[str(startYear + i)] = 0
+    # Record correct year-notes pair
     for i in range(5):
         yearCounter = 0
         for note in notes:
@@ -122,6 +129,7 @@ def showYear(f):
     
     f: Absolute path of a folder
     """
+    # Every year has string of 4 digits.
     findYear = os.path.join(f, '????')
     yearList = glob.glob(findYear)
     print('\nThis note folder include year folders:')
@@ -139,7 +147,9 @@ def folderInfo(f):
     # Get all notes in a note directory
     notes = walkNotes(f)
     print(len(notes), end='\n\n')
+    # Info about year
     yearDict = year(notes)
+    # Info about month
     month(notes, yearDict)
 #   day(notes)
 
@@ -149,6 +159,7 @@ def getPath(choice, path):
     choice: Choice of folder name
     path: Path of note system
     """
+    # Every choice stand for a note folder.
     if choice == 'a':
         notePath = 'my_notes/zettelkasten_notes'
     elif choice == 'b':
