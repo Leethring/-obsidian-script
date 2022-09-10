@@ -9,11 +9,11 @@ import glob
 def walkNotes(f):
     """Counts the number of notes within a directory."""
     folderName = os.path.basename(f)
-    if folderName == 'zettelkasten_notes' or folderName == 'language':
-        globPath = os.path.join(f, '*/*/*')
-    else:
-        globPath = os.path.join(f, '*/*')
-    allFiles = glob.glob(globPath)
+    globMonthPath = os.path.join(f, '*/*/*')
+    globYearPath = os.path.join(f, '*/*')
+    allMonthFiles = glob.glob(globMonthPath)
+    allYearFiles = glob.glob(globYearPath)
+    allFiles = allMonthFiles + allYearFiles
     notes = []
     for file in allFiles:
         if file.endswith('.md'):
@@ -21,7 +21,7 @@ def walkNotes(f):
     print(f'The total number of notes in this directory is:')
     return notes
 
-def Year(notes):
+def year(notes):
     """Show the number of notes within a year.
     
     notes: A list includes all notes
@@ -54,25 +54,33 @@ def Year(notes):
             countYear += 1
     yearAverage = yearSum // countYear
     print(f'The average of adding notes every year is: {yearAverage}\n')
+    return yearDict
 
-def countDay():
-    """Counts the number of notes within a day."""
+def day(notes):
+    """show day information of notes."""
     pass
 
-def showMonth(f):
-    """Return the number of notes within a month."""
-
-def maxDay():
-    """Return the max number of notes within a day."""
-    pass
-
-def maxMonth():
-    """Return the max number of note within a month."""
-    pass
-
-def averageDay(f):
-    """Return average of adding notes every day."""
-    pass
+def month(notes, yearDict):
+    """Show month information about notes.
+    
+    show info:
+        Number of notes for each month
+        Max number of notes in which month 
+        Average number of notes every month
+    ---
+    parameters:
+        notes - All notes given
+        yearDict - A dictionary with year-numberOfNotes pairs 
+    """
+    # Store all month from 2018 to 2022
+    years = []
+    # Add all months to each year
+    for year, yearNum in yearDict.items():
+        startMonth = int(str(year) + '00')
+        monthsList = []
+        for i in range(1, 13):
+            monthsList.append(str(startMonth + i))
+        years.append(monthsList)
 
 def showYear(f):
     """Show year folders in this note directory
@@ -86,9 +94,6 @@ def showYear(f):
         print(os.path.basename(year), end=' ')
     print("\n")
 
-def averageMonth():
-    """Return average of adding notes every month."""
-
 def folderInfo(f):
     """Print All information about this folder
     
@@ -99,11 +104,9 @@ def folderInfo(f):
     # Get all notes in a note directory
     notes = walkNotes(f)
     print(len(notes), end='\n\n')
-    Year(notes)
-    print('The average of adding notes daily is: {averageDay(f)}')
-    print('The average of adding notes monthly is: {averageMonth(f)}')
-    print('The max number of adding notes within a day is {maxDay(f)}.')
-#    showMonth(f)
+    yearDict = year(notes)
+    month(notes, yearDict)
+#   day(notes)
 
 def getPath(choice, n):
     """Return the absolute path of given folder.
@@ -123,8 +126,6 @@ def getPath(choice, n):
         notePath = 'my_notes/creative_notes'
     notePath = os.path.join(n, notePath)
     return notePath 
-        
-
 
 def interfaceFolder():
     """Shows interface."""
