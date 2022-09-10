@@ -75,12 +75,41 @@ def month(notes, yearDict):
     # Store all month from 2018 to 2022
     years = []
     # Add all months to each year
-    for year, yearNum in yearDict.items():
+    for year in yearDict.keys():
         startMonth = int(str(year) + '00')
         monthsList = []
         for i in range(1, 13):
             monthsList.append(str(startMonth + i))
+        # years is a 2-D list
         years.append(monthsList)
+    monthDict = {}
+    # Create a dictionary that shows month-number pairs
+    for year in years:
+        for month in year:
+            monthCount = 0
+            for note in notes:
+                if note.startswith(month):
+                    monthCount += 1
+            monthDict[str(month)] = monthCount
+    # Remove month with zero note
+    activeMonDict = {}
+    for m, n in monthDict.items():
+        if n == 0:
+            continue
+        else:
+            activeMonDict[m] = n
+    print('The months that include notes:')
+    print(activeMonDict)
+    # Find max number of adding notes in which month
+    max = 0
+    maxKey = 'a'
+    for key, value in activeMonDict.items():
+        if value > max:
+            max = value
+            maxKey = key
+        else:
+            continue
+    print(f'\n{maxKey} has {max} notes, which is the max number of a month.\n')
 
 def showYear(f):
     """Show year folders in this note directory
