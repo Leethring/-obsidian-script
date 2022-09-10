@@ -64,7 +64,7 @@ def month(notes, yearDict):
     """Show month information about notes.
     
     show info:
-        Number of notes for each month
+        Numbers of notes for each month
         Max number of notes in which month 
         Average number of notes every month
     ---
@@ -110,6 +110,12 @@ def month(notes, yearDict):
         else:
             continue
     print(f'\n{maxKey} has {max} notes, which is the max number of a month.\n')
+    # Find average of adding notes monthly
+    numNote = len(notes)   
+    numMonth = len(activeMonDict)
+    averMonth = numNote // numMonth
+    print(f'The average of adding notes monthly is {averMonth}')
+
 
 def showYear(f):
     """Show year folders in this note directory
@@ -137,11 +143,11 @@ def folderInfo(f):
     month(notes, yearDict)
 #   day(notes)
 
-def getPath(choice, n):
+def getPath(choice, path):
     """Return the absolute path of given folder.
     
     choice: Choice of folder name
-    n: Path of note system
+    path: Path of note system
     """
     if choice == 'a':
         notePath = 'my_notes/zettelkasten_notes'
@@ -153,7 +159,7 @@ def getPath(choice, n):
         notePath = 'my_notes/wiki-notes'
     elif choice == 'e':
         notePath = 'my_notes/creative_notes'
-    notePath = os.path.join(n, notePath)
+    notePath = os.path.join(path, notePath)
     return notePath 
 
 def interfaceFolder():
@@ -170,7 +176,9 @@ def interfaceFolder():
 
 if __name__ == "__main__":
     noteSystemFolder = '/Users/liweiwei/Nutstore Files/note_system'
+    # Show the interface
     interfaceFolder()
+    # Input the folder you want to know
     folder = input()
     if folder not in 'abcde':
         quit()
