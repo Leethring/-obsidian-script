@@ -7,19 +7,19 @@ import glob
 def day(notes):
     """Show day information of notes.
     
-    Variable | Show
-    ---
-    averDay (int): The Average number of notes every day
-    maxNum (int): The Max number of notes within one day
-    maxDay (str): The day with max number
-
     Parameter
     ---
     notes (list): A list of all notes in working folder
+
+    Variable | Show
+    ---
+    averDay (int): The Average number of notes every day 
+        (Optimistical: days without new notes is exclusive)
+    maxNum (int): The Max number of notes within one day
+    maxDay (str): The day with max number
     """
-    # Create a dictionary include day-note pair.
+    # Init a dictionary of day-note pair
     daysNotes = {}
-    # Init the dictionary of day-note pair
     for note in notes:
         noteDayHead = note[0:8]
         if noteDayHead.startswith('20'):
@@ -38,8 +38,17 @@ def day(notes):
 
 def folderInfo(f):
     """Print All information about this folder
-    
+
+    Parameters
+    ---
     f: Absolute path of a folder
+
+    Important variables | Information
+    ---
+    year(): Show information about year
+    month(): Show information about month
+    day(): Show information about day
+    notes (list): A list of all notes
     """
     print(f'We are in folder: {os.path.basename(f)}')
     showYear(f)
@@ -55,7 +64,9 @@ def folderInfo(f):
 
 def getPath(choice, path):
     """Return the absolute path of given folder.
-    
+
+    Parameters
+    ---
     choice: Choice of folder name
     path: Path of note system
     """
@@ -70,9 +81,15 @@ def getPath(choice, path):
         return os.path.join(projectsAbs, choice)
 
 def interfaceFolder(p):
-    """Shows interface.
-    
+    """Shows interface and return a dictionary of choice-folder pair
+
+    Parameters
+    ---
     p: The absolute path of current folder
+
+    Return
+    ---
+    dirDict (dict): Dictionary of choice-folder pair
     """
     cwdBasename = os.path.basename(p)
     print(f'We are in {cwdBasename} folder')
@@ -106,7 +123,17 @@ def interfaceFolder(p):
     return dirDict
 
 def maxDict(dict):
-    """Return max value and related key within a dictionary."""
+    """Return max value and related key within a dictionary.
+    
+    Parameters
+    ---
+    dict (dict): A dictionary contains values
+
+    Returns
+    ---
+    max (int): The max value among dictionary's values.
+    maxKey (str): The key that contains the max value.
+    """
     # Find max number of adding notes in which month
     max = 0
     maxKey = 'a'
@@ -120,6 +147,11 @@ def maxDict(dict):
 
 def month(notes, yearDict):
     """Show month information about notes.
+
+    Parameters
+    ---
+    notes:  All notes given
+    yearDict:  A dictionary with year-numberOfNotes pairs 
     
     Variables | Show
     ---
@@ -127,11 +159,6 @@ def month(notes, yearDict):
     activeMondict: Dictionary include month-note pairs (zero-note month is exclusive)
     max: Max number of notes in which month 
     maxKey: Month with max number 
-
-    Parameters
-    ---
-    notes:  All notes given
-    yearDict:  A dictionary with year-numberOfNotes pairs 
     """
     # Store all month from 2018 to 2022
     years = []
@@ -161,19 +188,21 @@ def month(notes, yearDict):
             activeMonDict[m] = n
     print('The months that include notes:')
     print(activeMonDict)
-    # Find max number of adding notes in which month
-    maxNum, maxMonth = maxDict(activeMonDict)
-    print(f'\n{maxMonth} has {maxNum} notes, which is the max number of a month.\n')
     # Find average of adding notes monthly
     numNote = len(notes)   
     numMonth = len(activeMonDict)
     averMonth = numNote // numMonth
-    print(f'The average of adding notes monthly is {averMonth}')
+    print(f'\nThe average of adding notes monthly is {averMonth}')
+    # Find max number of adding notes in which month
+    maxNum, maxMonth = maxDict(activeMonDict)
+    print(f'Month {maxMonth} has max number of notes: {maxNum}')
 
 def showYear(f):
     """Show year folders in this note directory
     
-    f: Absolute path of a folder
+    Args
+    ---
+    f (str): Absolute path of a folder
     """
     # Every year has string of 4 digits.
     findYear = os.path.join(f, '????')
@@ -186,7 +215,8 @@ def showYear(f):
 def walkNotes(f):
     """Counts the number of notes within a directory.
     
-    f: the path of this note folder
+    Args:
+        f: the path of this note folder
     """
     # Find all files in this folder
     notes = []
@@ -199,8 +229,16 @@ def walkNotes(f):
 
 def year(notes):
     """Show the number of notes within a year.
-    
-    notes: A list includes all notes
+
+    Parameters:
+        notes: A list includes all notes
+
+    Returns | Variable | Info
+    ---
+    yearDict (dictionary): A dictionary of year-note pairs
+        that is Returned
+    maxNum (int): The max number of notes within a year
+    maxYear (int): The year that has max number of notes
     """
     # Dictionary to store year-numberOfNotes pairs
     yearDict = {}
@@ -217,10 +255,10 @@ def year(notes):
                 yearCounter = yearCounter + 1
         yearDict[str(startYear +i)] = yearCounter
     print(f'Every year include different numbers of note:\n{yearDict}\n')
-    # Find the max number of adding within a year 
-    maxNumNote = max(yearDict.values())
-    maxYear = {i for i in yearDict if yearDict[i]==maxNumNote}
-    print(f'The max number of notes a year is: {maxNumNote} in {list(maxYear)[0]} year\n')
+    # Show the max number of adding within a year 
+    maxNum = max(yearDict.values())
+    maxYear = {i for i in yearDict if yearDict[i]==maxNum}
+    print(f'Year {list(maxYear)[0]} has max number of notes: {maxNum}')
     # Calculate average notes of this year
     yearSum = 0
     yearAverage = 0
@@ -246,5 +284,7 @@ if __name__ == "__main__":
     if choice not in choices.keys():
         quit()
     print(f'You have chosen {choice}. {choices[choice]}')
+    # Store the chosen folder 
     workingFolder = getPath(choices[choice], noteSystemFolder)
+    # Show all information about a note folder.
     folderInfo(workingFolder)
