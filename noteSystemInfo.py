@@ -4,23 +4,21 @@
 import os
 import glob
 
+def day(notes):
+    """show day information of notes."""
+    pass
+
 def walkNotes(f):
     """Counts the number of notes within a directory.
     
     f: the path of this note folder
     """
     # Find all files in this folder
-    globMonthPath = os.path.join(f, '*/*/*')
-    globYearPath = os.path.join(f, '*/*')
-    allMonthFiles = glob.glob(globMonthPath)
-    allYearFiles = glob.glob(globYearPath)
-    allFiles = allMonthFiles + allYearFiles
-    # Find all notes in this folder
-    # Notes end with '.md'
     notes = []
-    for file in allFiles:
-        if file.endswith('.md'):
-            notes.append(os.path.basename(file))
+    for foldername, subfolders, filenames in os.walk(f):
+        for filename in filenames:
+            if filename.endswith('.md'):
+                notes.append(filename)
     print(f'The total number of notes in this directory is:')
     return notes
 
@@ -62,10 +60,6 @@ def year(notes):
     yearAverage = yearSum // countYear
     print(f'The average of adding notes every year is: {yearAverage}\n')
     return yearDict
-
-def day(notes):
-    """show day information of notes."""
-    pass
 
 def month(notes, yearDict):
     """Show month information about notes.
@@ -122,7 +116,6 @@ def month(notes, yearDict):
     numMonth = len(activeMonDict)
     averMonth = numNote // numMonth
     print(f'The average of adding notes monthly is {averMonth}')
-
 
 def showYear(f):
     """Show year folders in this note directory
