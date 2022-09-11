@@ -166,25 +166,51 @@ def getPath(choice, path):
     notePath = os.path.join(path, notePath)
     return notePath 
 
-def interfaceFolder():
-    """Shows interface."""
+def interfaceFolder(p):
+    """Shows interface.
+    
+    p: The absolute path of current folder
+    """
+    cwdBasename = os.path.basename(p)
+    print(f'We are in {cwdBasename} folder')
     print("""
     Please choose a folder to check its information (Input its letter):
-    a. Zettelkasten Directory
-    b. Language Directory
-    c. Coding Directory
-    d. Wiki Directory 
-    e. Creative Directory
     (Quit when typing others)
     """)
+    # Find all note folders in current folder
+    my_notes = os.path.join(p, 'my_notes')
+    projects = os.path.join(p, 'Projects')
+    dirListMyNotes = os.listdir(my_notes)
+    dirListProjects = os.listdir(projects)
+    dirListRaw = dirListMyNotes + dirListProjects
+    dirList = []
+    # Delete folders or files not are note folders
+    for i in dirListRaw:
+        if '.' not in i:
+           dirList.append(i) 
+    startChar = 65
+    # Create Choices
+    listChar = []
+    for i in range(len(dirList)):
+        listChar.append(chr(startChar + i))
+    # Create choice-folder pairs
+    dirDict = {}
+    for i in range(len(dirList)):
+        dirDict[listChar[i]] = dirList[i]
+    # Show choice of folders
+    for key, value in dirDict.items():
+        print(f'{key}. {value}')
+    return dirDict
 
 if __name__ == "__main__":
     noteSystemFolder = '/Users/liweiwei/Nutstore Files/note_system'
     # Show the interface
-    interfaceFolder()
+    choices = interfaceFolder(noteSystemFolder)
     # Input the folder you want to know
-    folder = input()
-    if folder not in 'abcde':
+    choiceLow = input()
+    choice = choiceLow.upper()
+    if choice not in choices.keys():
         quit()
-    workingFolder = getPath(folder, noteSystemFolder)
-    folderInfo(workingFolder)
+    print(f'You have chosen {choice}. {choices[choice]}')
+#    workingFolder = getPath(choices[choice], noteSystemFolder)
+#    folderInfo(workingFolder)
