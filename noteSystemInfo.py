@@ -156,6 +156,7 @@ def getPath(choice, path):
     myNotesAbs = os.path.join(path, 'my_notes')
     projectsAbs = os.path.join(path, 'Projects')
     myNotesFolders = os.listdir(myNotesAbs)
+    # Return absolute path of the chosen folder
     if choice in myNotesFolders:
         return os.path.join(myNotesAbs, choice)
     else:
