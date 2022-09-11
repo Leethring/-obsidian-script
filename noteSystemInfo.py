@@ -125,7 +125,7 @@ def showYear(f):
     # Every year has string of 4 digits.
     findYear = os.path.join(f, '????')
     yearList = glob.glob(findYear)
-    print('\nThis note folder include year folders:')
+    print('\nThis note folder includes year folders:')
     for year in yearList:
         print(os.path.basename(year), end=' ')
     print("\n")
@@ -152,19 +152,14 @@ def getPath(choice, path):
     choice: Choice of folder name
     path: Path of note system
     """
-    # Every choice stand for a note folder.
-    if choice == 'a':
-        notePath = 'my_notes/zettelkasten_notes'
-    elif choice == 'b':
-        notePath = 'Projects/language'
-    elif choice == 'c':
-        notePath = 'Projects/coding'
-    elif choice == 'd':
-        notePath = 'my_notes/wiki-notes'
-    elif choice == 'e':
-        notePath = 'my_notes/creative_notes'
-    notePath = os.path.join(path, notePath)
-    return notePath 
+    # Find all notes folders
+    myNotesAbs = os.path.join(path, 'my_notes')
+    projectsAbs = os.path.join(path, 'Projects')
+    myNotesFolders = os.listdir(myNotesAbs)
+    if choice in myNotesFolders:
+        return os.path.join(myNotesAbs, choice)
+    else:
+        return os.path.join(projectsAbs, choice)
 
 def interfaceFolder(p):
     """Shows interface.
@@ -212,5 +207,5 @@ if __name__ == "__main__":
     if choice not in choices.keys():
         quit()
     print(f'You have chosen {choice}. {choices[choice]}')
-#    workingFolder = getPath(choices[choice], noteSystemFolder)
-#    folderInfo(workingFolder)
+    workingFolder = getPath(choices[choice], noteSystemFolder)
+    folderInfo(workingFolder)
