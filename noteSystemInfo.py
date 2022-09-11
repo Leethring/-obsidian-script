@@ -5,8 +5,36 @@ import os
 import glob
 
 def day(notes):
-    """show day information of notes."""
-    pass
+    """Show day information of notes.
+    
+    Variable | Show
+    ---
+    averDay (int): The Average number of notes every day
+    maxNum (int): The Max number of notes within one day
+    maxDay (str): The day with max number
+
+    Parameter
+    ---
+    notes (list): A list of all notes in working folder
+    """
+    # Create a dictionary include day-note pair.
+    daysNotes = {}
+    # Init the dictionary of day-note pair
+    for note in notes:
+        noteDayHead = note[0:8]
+        if noteDayHead.startswith('20'):
+            daysNotes[noteDayHead] = 0
+    # Count number of notes within a day
+    for note in notes:
+        noteDayHead = note[0:8]
+        if noteDayHead in daysNotes.keys():
+            daysNotes[noteDayHead] += 1
+    # Calculate average number of notes per day
+    averDay =  sum(daysNotes.values()) // len(daysNotes)
+    print(f'The average number of notes per note is: {averDay}')
+    # Find max number of notes within a day
+    maxNum, maxDay = maxDict(daysNotes)
+    print(f'Day {maxDay} has max number of notes: {maxNum}')
 
 def folderInfo(f):
     """Print All information about this folder
@@ -22,7 +50,8 @@ def folderInfo(f):
     yearDict = year(notes)
     # Info about month
     month(notes, yearDict)
-#   day(notes)
+    day(notes)
+    print('End of all information.')
 
 def getPath(choice, path):
     """Return the absolute path of given folder.
@@ -76,18 +105,33 @@ def interfaceFolder(p):
         print(f'{key}. {value}')
     return dirDict
 
+def maxDict(dict):
+    """Return max value and related key within a dictionary."""
+    # Find max number of adding notes in which month
+    max = 0
+    maxKey = 'a'
+    for key, value in dict.items():
+        if value > max:
+            max = value
+            maxKey = key
+        else:
+            continue
+    return max, maxKey
 
 def month(notes, yearDict):
     """Show month information about notes.
     
-    show info:
-        Numbers of notes for each month
-        Max number of notes in which month 
-        Average number of notes every month
+    Variables | Show
     ---
-    parameters:
-        notes - All notes given
-        yearDict - A dictionary with year-numberOfNotes pairs 
+    averMonth: Average number of notes every month
+    activeMondict: Dictionary include month-note pairs (zero-note month is exclusive)
+    max: Max number of notes in which month 
+    maxKey: Month with max number 
+
+    Parameters
+    ---
+    notes:  All notes given
+    yearDict:  A dictionary with year-numberOfNotes pairs 
     """
     # Store all month from 2018 to 2022
     years = []
@@ -118,15 +162,8 @@ def month(notes, yearDict):
     print('The months that include notes:')
     print(activeMonDict)
     # Find max number of adding notes in which month
-    max = 0
-    maxKey = 'a'
-    for key, value in activeMonDict.items():
-        if value > max:
-            max = value
-            maxKey = key
-        else:
-            continue
-    print(f'\n{maxKey} has {max} notes, which is the max number of a month.\n')
+    maxNum, maxMonth = maxDict(activeMonDict)
+    print(f'\n{maxMonth} has {maxNum} notes, which is the max number of a month.\n')
     # Find average of adding notes monthly
     numNote = len(notes)   
     numMonth = len(activeMonDict)
@@ -198,6 +235,7 @@ def year(notes):
     yearAverage = yearSum // countYear
     print(f'The average of adding notes every year is: {yearAverage}\n')
     return yearDict
+
 if __name__ == "__main__":
     noteSystemFolder = '/Users/liweiwei/Nutstore Files/note_system'
     # Show the interface
