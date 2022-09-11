@@ -8,7 +8,7 @@ At the start, a note folder needed to chosen to show related information
 import os
 import glob
 
-def day(notes):
+def show_day_info(notes):
     """Show day information of notes.
 
     This function shows the average number of notes every day, 
@@ -44,7 +44,7 @@ def day(notes):
     max_number, day_with_max = find_max_value(day_to_notes)
     print(f'Day {day_with_max} has max number of notes: {max_number}')
 
-def folder_info(absolute_path_of_folder):
+def show_all_info(absolute_path_of_folder):
     """Print All information about this folder
 
     Parameters
@@ -64,13 +64,13 @@ def folder_info(absolute_path_of_folder):
     notes = walk_notes(absolute_path_of_folder)
     print(len(notes), end='\n\n')
     # Info about year
-    year_to_number_of_notes = year(notes)
+    year_to_number_of_notes = show_year_info(notes)
     # Info about month
-    month(notes, year_to_number_of_notes)
-    day(notes)
+    show_month_info(notes, year_to_number_of_notes)
+    show_day_info(notes)
     print('End of all information.')
 
-def getPath(choice, path):
+def get_path(choice, path):
     """Return the absolute path of given folder.
 
     Parameters
@@ -88,7 +88,7 @@ def getPath(choice, path):
     else:
         return os.path.join(projects_absolute_path, choice)
 
-def interface(absolute_path_of_note_system):
+def show_interface(absolute_path_of_note_system):
     """Shows interface and return a dictionary of choice-folder pair
 
     Parameters:
@@ -151,7 +151,7 @@ def find_max_value(dictionary_with_values):
             continue
     return max, key_with_max
 
-def month(notes, year_to_number_of_notes):
+def show_month_info(notes, year_to_number_of_notes):
     """Show month information about notes.
 
     Parameters
@@ -233,7 +233,7 @@ def walk_notes(absolute_path_of_note_folder):
     print(f'The total number of notes in this directory is:')
     return notes
 
-def year(notes):
+def show_year_info(notes):
     """Show the number of notes within a year.
 
     Parameters:
@@ -283,7 +283,7 @@ def year(notes):
 if __name__ == "__main__":
     absolute_path_of_note_system = '/Users/liweiwei/Nutstore Files/note_system'
     # Show the interface
-    choices = interface(absolute_path_of_note_system)
+    choices = show_interface(absolute_path_of_note_system)
     # Input the folder you want to know
     choice_lowercase_or_uppercase = input()
     choice = choice_lowercase_or_uppercase.upper()
@@ -291,6 +291,6 @@ if __name__ == "__main__":
         quit()
     print(f'You have chosen {choice}. {choices[choice]}')
     # Store the chosen folder 
-    working_folder = getPath(choices[choice], absolute_path_of_note_system)
+    working_folder = get_path(choices[choice], absolute_path_of_note_system)
     # Show all information about a note folder.
-    folder_info(working_folder)
+    show_all_info(working_folder)
