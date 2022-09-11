@@ -6,8 +6,36 @@ import os
 import glob
 
 
-class Note:
+class NoteCollection():
     """Notes with filenames."""
+    pass
+
+class NoteDirectory():
+    """A Note Directory with subdirectories and files."""
+    def __init__(self,absolute_path):
+        self.abspath = absolute_path
+        self.directories = []
+        self.subdirectories = []
+        self.files = []
+    
+    def walk_note_directory(self):
+        """Walk the whole note directory"""
+        for foldername, subfolders, filenames in os.walk(self.abspath):
+            self.directories.append(foldername)
+            for subfolder in subfolders:
+                self.subdirectories.append(subfolder)
+            for filename in filenames:
+                self.files.append(filename)
+
+    def return_number_of_files(self):
+        return len(self.files)
+    
+    def get_note_filenames(self):
+        filenames = []
+        for file in self.files:
+            if file.endswith('.md'):
+                filenames.append(os.path.basename(file))
+        print(len(filenames)) 
 
 class NoteSystem():
     """Note system used by us."""
@@ -80,12 +108,51 @@ class Interface():
     def input(self):
         choice = input()
     
+def show_note_directories():
+    """Show all subdirectories in this directory"""
+    my_notes_directories = os.listdir('/Users/liweiwei/Nutstore Files/note_system/my_notes')
+    project_directories = os.listdir('/Users/liweiwei/Nutstore Files/note_system/Projects')
+    all_folders_raw = my_notes_directories + project_directories
+    all_note_folders = []
+    # Delete folders or files not are note folders
+    for i in all_folders_raw:
+        if '.' not in i:
+           all_note_folders.append(i) 
+    start_character_with_uppercase_a = 65
+    # Create Choices
+    characters_as_choices = []
+    for i in range(len(all_note_folders)):
+        characters_as_choices.append(chr(start_character_with_uppercase_a + i))
+    # Create choice-folder pairs
+    choice_to_chosen_folder = {}
+    for i in range(len(all_note_folders)):
+        choice_to_chosen_folder[characters_as_choices[i]] = all_note_folders[i]
+    # Show choice of folders
+    for key, value in choice_to_chosen_folder.items():
+        print(f'{key}. {value}')
+    return choice_to_chosen_folder, my_notes_directories, project_directories
+
+def get_path(choice, choices, my_notes, projects):
+    """Return the absolute path of given folder.
+
+    Parameters
+    ---
+    choice: Choice of folder name
+    path: Path of note system
+    """
+    # Find all notes folders
+    foldername = choices[choice] 
+    if foldername in my_notes:
+        return os.path.join('/Users/liweiwei/Nutstore Files/note_system/my_notes', foldername)
+    if foldername in projects:
+        return os.path.join('/Users/liweiwei/Nutstore Files/note_system/Projects', foldername)
 
 if __name__ == "__main__":
     absolute_path_of_note_system = '/Users/liweiwei/Nutstore Files/note_system'
-    note_system = NoteSystem(absolute_path_of_note_system)
-    my_note = MyNote(absolute_path_of_note_system)
-    projects = Projects(absolute_path_of_note_system)
-    choices = note_system.create_choice()
-    interface = Interface(choices)
-    interface.show_choices()
+    choices, my_notes_directories, projects_directories = show_note_directories()
+    input_choice_lower = input()
+    input_choice = input_choice_lower.upper()
+    absolute_path_of_note_directory = get_path(input_choice, choices, my_notes_directories, projects_directories)
+#    note_system_directory = NoteDirectory(absolute_path_of_note_system)
+#    note_system_directory.walk_note_directory()
+#    note_system_directory.get_note_filenames()
