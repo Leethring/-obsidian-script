@@ -13,30 +13,30 @@ def day(notes):
 
     Variable | Show
     ---
-    averDay (int): The Average number of notes every day 
+    average_day (int): The Average number of notes every day 
         (Optimistical: days without new notes is exclusive)
-    maxNum (int): The Max number of notes within one day
-    maxDay (str): The day with max number
+    max_number (int): The Max number of notes within one day
+    day_with_max (str): The day with max number
     """
     # Init a dictionary of day-note pair
-    daysNotes = {}
+    day_note_pairs = {}
     for note in notes:
-        noteDayHead = note[0:8]
-        if noteDayHead.startswith('20'):
-            daysNotes[noteDayHead] = 0
+        note_day_head = note[0:8]
+        if note_day_head.startswith('20'):
+            day_note_pairs[note_day_head] = 0
     # Count number of notes within a day
     for note in notes:
-        noteDayHead = note[0:8]
-        if noteDayHead in daysNotes.keys():
-            daysNotes[noteDayHead] += 1
+        note_day_head = note[0:8]
+        if note_day_head in day_note_pairs.keys():
+            day_note_pairs[note_day_head] += 1
     # Calculate average number of notes per day
-    averDay =  sum(daysNotes.values()) // len(daysNotes)
-    print(f'The average number of notes per note is: {averDay}')
+    average_day =  sum(day_note_pairs.values()) // len(day_note_pairs)
+    print(f'The average number of notes per note is: {average_day}')
     # Find max number of notes within a day
-    maxNum, maxDay = maxDict(daysNotes)
-    print(f'Day {maxDay} has max number of notes: {maxNum}')
+    max_number, day_with_max = find_max_dict_value(day_note_pairs)
+    print(f'Day {day_with_max} has max number of notes: {max_number}')
 
-def folderInfo(f):
+def folder_info(f):
     """Print All information about this folder
 
     Parameters
@@ -51,14 +51,14 @@ def folderInfo(f):
     notes (list): A list of all notes
     """
     print(f'We are in folder: {os.path.basename(f)}')
-    showYear(f)
+    show_year(f)
     # Get all notes in a note directory
-    notes = walkNotes(f)
+    notes = walk_notes(f)
     print(len(notes), end='\n\n')
     # Info about year
-    yearDict = year(notes)
+    year_number_dict = year(notes)
     # Info about month
-    month(notes, yearDict)
+    month(notes, year_number_dict)
     day(notes)
     print('End of all information.')
 
@@ -71,16 +71,16 @@ def getPath(choice, path):
     path: Path of note system
     """
     # Find all notes folders
-    myNotesAbs = os.path.join(path, 'my_notes')
-    projectsAbs = os.path.join(path, 'Projects')
-    myNotesFolders = os.listdir(myNotesAbs)
+    my_notes_absolute_path = os.path.join(path, 'my_notes')
+    projects_absolute_path = os.path.join(path, 'Projects')
+    folders_in_my_notes = os.listdir(my_notes_absolute_path)
     # Return absolute path of the chosen folder
-    if choice in myNotesFolders:
-        return os.path.join(myNotesAbs, choice)
+    if choice in folders_in_my_notes:
+        return os.path.join(my_notes_absolute_path, choice)
     else:
-        return os.path.join(projectsAbs, choice)
+        return os.path.join(projects_absolute_path, choice)
 
-def interfaceFolder(p):
+def interface(p):
     """Shows interface and return a dictionary of choice-folder pair
 
     Parameters
@@ -89,10 +89,10 @@ def interfaceFolder(p):
 
     Return
     ---
-    dirDict (dict): Dictionary of choice-folder pair
+    choice_folder_pairs (dict): Dictionary of choice-folder pair
     """
-    cwdBasename = os.path.basename(p)
-    print(f'We are in {cwdBasename} folder')
+    cwd_basename = os.path.basename(p)
+    print(f'We are in {cwd_basename} folder')
     print("""
     Please choose a folder to check its information (Input its letter):
     (Quit when typing others)
@@ -100,29 +100,29 @@ def interfaceFolder(p):
     # Find all note folders in current folder
     my_notes = os.path.join(p, 'my_notes')
     projects = os.path.join(p, 'Projects')
-    dirListMyNotes = os.listdir(my_notes)
-    dirListProjects = os.listdir(projects)
-    dirListRaw = dirListMyNotes + dirListProjects
-    dirList = []
+    folders_in_my_notes = os.listdir(my_notes)
+    folders_in_project = os.listdir(projects)
+    all_folders_raw = folders_in_my_notes + folders_in_project
+    folders_list = []
     # Delete folders or files not are note folders
-    for i in dirListRaw:
+    for i in all_folders_raw:
         if '.' not in i:
-           dirList.append(i) 
-    startChar = 65
+           folders_list.append(i) 
+    start_char = 65
     # Create Choices
-    listChar = []
-    for i in range(len(dirList)):
-        listChar.append(chr(startChar + i))
+    chars = []
+    for i in range(len(folders_list)):
+        chars.append(chr(start_char + i))
     # Create choice-folder pairs
-    dirDict = {}
-    for i in range(len(dirList)):
-        dirDict[listChar[i]] = dirList[i]
+    choice_folder_pairs = {}
+    for i in range(len(folders_list)):
+        choice_folder_pairs[chars[i]] = folders_list[i]
     # Show choice of folders
-    for key, value in dirDict.items():
+    for key, value in choice_folder_pairs.items():
         print(f'{key}. {value}')
-    return dirDict
+    return choice_folder_pairs
 
-def maxDict(dict):
+def find_max_dict_value(dict):
     """Return max value and related key within a dictionary.
     
     Parameters
@@ -132,72 +132,72 @@ def maxDict(dict):
     Returns
     ---
     max (int): The max value among dictionary's values.
-    maxKey (str): The key that contains the max value.
+    key_with_max (str): The key that contains the max value.
     """
     # Find max number of adding notes in which month
     max = 0
-    maxKey = 'a'
+    key_with_max = 'a'
     for key, value in dict.items():
         if value > max:
             max = value
-            maxKey = key
+            key_with_max = key
         else:
             continue
-    return max, maxKey
+    return max, key_with_max
 
-def month(notes, yearDict):
+def month(notes, year_number_dict):
     """Show month information about notes.
 
     Parameters
     ---
     notes:  All notes given
-    yearDict:  A dictionary with year-numberOfNotes pairs 
+    year_number_dict:  A dictionary with year-numberOfNotes pairs 
     
     Variables | Show
     ---
-    averMonth: Average number of notes every month
+    average_month: Average number of notes every month
     activeMondict: Dictionary include month-note pairs (zero-note month is exclusive)
     max: Max number of notes in which month 
-    maxKey: Month with max number 
+    key_with_max: Month with max number 
     """
     # Store all month from 2018 to 2022
     years = []
     # Add all months to each year
-    for year in yearDict.keys():
-        startMonth = int(str(year) + '00')
-        monthsList = []
+    for year in year_number_dict.keys():
+        start_month = int(str(year) + '00')
+        months = []
         for i in range(1, 13):
-            monthsList.append(str(startMonth + i))
+            months.append(str(start_month + i))
         # years is a 2-D list
-        years.append(monthsList)
-    monthDict = {}
+        years.append(months)
+    month_number_pairs = {}
     # Create a dictionary that shows month-number pairs
     for year in years:
         for month in year:
-            monthCount = 0
+            count_month = 0
             for note in notes:
                 if note.startswith(month):
-                    monthCount += 1
-            monthDict[str(month)] = monthCount
+                    count_month += 1
+            month_number_pairs[str(month)] = count_month
     # Remove month with zero note
-    activeMonDict = {}
-    for m, n in monthDict.items():
+    active_month = {}
+    for m, n in month_number_pairs.items():
         if n == 0:
             continue
         else:
-            activeMonDict[m] = n
+            active_month[m] = n
     print('The months that include notes:')
-    print(activeMonDict)
+    print(active_month)
     # Find average of adding notes monthly
-    numNote = len(notes)   
-    numMonth = len(activeMonDict)
-    averMonth = numNote // numMonth
-    print(f'\nThe average of adding notes monthly is {averMonth}')
+    number_notes = len(notes)   
+    number_month = len(active_month)
+    average_month = number_notes // number_month
+    print(f'\nThe average of adding notes monthly is {average_month}')
     # Find max number of adding notes in which month
-    maxNum, maxMonth = maxDict(activeMonDict)
-    print(f'Month {maxMonth} has max number of notes: {maxNum}')
+    max_number, maxMonth = find_max_dict_value(active_month)
+    print(f'Month {maxMonth} has max number of notes: {max_number}')
 
-def showYear(f):
+def show_year(f):
     """Show year folders in this note directory
     
     Args
@@ -212,7 +212,7 @@ def showYear(f):
         print(os.path.basename(year), end=' ')
     print("\n")
 
-def walkNotes(f):
+def walk_notes(f):
     """Counts the number of notes within a directory.
     
     Args:
@@ -235,36 +235,36 @@ def year(notes):
 
     Returns | Variable | Info
     ---
-    yearDict (dictionary): A dictionary of year-note pairs
+    year_number_dict (dictionary): A dictionary of year-note pairs
         that is Returned
-    maxNum (int): The max number of notes within a year
+    max_number (int): The max number of notes within a year
     maxYear (int): The year that has max number of notes
     """
     # Dictionary to store year-numberOfNotes pairs
-    yearDict = {}
+    year_number_dict = {}
     # We start write note from 2018 
     startYear = 2018
     # Init year dictionary
     for i in range(5):
-        yearDict[str(startYear + i)] = 0
+        year_number_dict[str(startYear + i)] = 0
     # Record correct year-notes pair
     for i in range(5):
         yearCounter = 0
         for note in notes:
             if note.startswith(str(startYear+ i)):
                 yearCounter = yearCounter + 1
-        yearDict[str(startYear +i)] = yearCounter
-    print(f'Every year include different numbers of note:\n{yearDict}\n')
+        year_number_dict[str(startYear +i)] = yearCounter
+    print(f'Every year include different numbers of note:\n{year_number_dict}\n')
     # Show the max number of adding within a year 
-    maxNum = max(yearDict.values())
-    maxYear = {i for i in yearDict if yearDict[i]==maxNum}
-    print(f'Year {list(maxYear)[0]} has max number of notes: {maxNum}')
+    max_number = max(year_number_dict.values())
+    maxYear = {i for i in year_number_dict if year_number_dict[i]==max_number}
+    print(f'Year {list(maxYear)[0]} has max number of notes: {max_number}')
     # Calculate average notes of this year
     yearSum = 0
     yearAverage = 0
     # When a year don't have any notes, we don't average this year
     countYear = 0
-    for value in yearDict.values():
+    for value in year_number_dict.values():
         if value == 0:
             continue
         else:
@@ -272,19 +272,19 @@ def year(notes):
             countYear += 1
     yearAverage = yearSum // countYear
     print(f'The average of adding notes every year is: {yearAverage}\n')
-    return yearDict
+    return year_number_dict
 
 if __name__ == "__main__":
-    noteSystemFolder = '/Users/liweiwei/Nutstore Files/note_system'
+    note_system_folder = '/Users/liweiwei/Nutstore Files/note_system'
     # Show the interface
-    choices = interfaceFolder(noteSystemFolder)
+    choices = interface(note_system_folder)
     # Input the folder you want to know
-    choiceLow = input()
-    choice = choiceLow.upper()
+    choice_lowercase = input()
+    choice = choice_lowercase.upper()
     if choice not in choices.keys():
         quit()
     print(f'You have chosen {choice}. {choices[choice]}')
     # Store the chosen folder 
-    workingFolder = getPath(choices[choice], noteSystemFolder)
+    working_folder = getPath(choices[choice], note_system_folder)
     # Show all information about a note folder.
-    folderInfo(workingFolder)
+    folder_info(working_folder)
