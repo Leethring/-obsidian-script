@@ -1,17 +1,17 @@
 #! python3
-# add_see_also_section.py - Adds See Also section at the end of a note
-# Usage: python3 add_see_also_section.py /path/to/notes, such as ./wiki-note/2022/*
+# addSeeAlso.py - Adds See Also section at the end of a note
 
 import os
 import re
 import sys
 
-# Find all markdown notes
+# Find all markdown notes with its absolute path
 filenames = []
 for i in range(len(sys.argv) - 1):
     file = os.path.abspath(sys.argv[i + 1])
     if file.endswith('.md'):
         filenames.append(file)
+        print(filenames)
     else:
         continue
 
