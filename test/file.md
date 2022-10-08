@@ -1,5 +1,3 @@
-[[1a-note-method|note method]]
+## Noun
 
-## See Also 
-
-#Water
+asdf ## Noun
