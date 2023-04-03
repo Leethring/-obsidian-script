@@ -1,6 +1,11 @@
 #! python3
-# add_frontmatter.py - adds uid, date, and alias in the head of a notes
-# Usage: python3 add_see_also_section.py /path/to/notes, such as ./wiki-note/2022/*
+# add_frontmatter.py - adds uid, date, and alias to the head of a notes
+# ---
+# author: 
+# date:
+# uid:
+# alias:
+# ---
 
 import os
 import re
@@ -15,8 +20,8 @@ for i in range(len(sys.argv) - 1):
     else:
         continue
 
-# Add See Also section 
 for filename in filenames:
+    # Find files having title as its first line
     with open(filename, 'r', encoding='UTF-8') as matched_filename:
         lines_of_a_file = matched_filename.readlines()
         first_line = ' '
@@ -25,6 +30,7 @@ for filename in filenames:
             flag_of_hash_head = first_line.startswith('# ')
         else:
             flag_of_hash_head = 0
+    # Add frontmatter
     if flag_of_hash_head:
         print(filename)
         title_match = re.match(r"(# )(.*)", str(first_line))
